@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Rss Reader</string>
+    <string name="album_title">Album Title</string>
+    <string name="search">Query</string>
+    <string name="search_text">Search</string>
+    <string name="vestiru">Вести.Ru</string>
+    <string name="sorry">Sorry</string>
+    <string name="author_name">Author Name</string>
+    <string name="album_name">Album Name</string>
+    <string name="album_cover">Album Cover</string>
+    <string name="refresh_button">Refresh Button</string>
+    <string name="button_to_go_back">Button to go back</string>
+    <string name="price_image">Price image</string>
+    <string name="song_name">Song name</string>
+    <string name="time">10:11</string>
+    <string name="price_value">14,99$</string>
+    <string name="no_internet_connection_image">No internet connection image</string>
+    <string name="update">UPDATE</string>
+    <string name="internet_trouble">Server problem. Check your internet connection.</string>
+
+
+    <string-array name="categories">
+        <item>Все</item>
+        <item>Политика</item>
+        <item>Общество</item>
+        <item>Экономика</item>
+        <item>Происшествия</item>
+        <item>Вести.Hi-Tech</item>
+        <item>В мире</item>
+    </string-array>
+
+</resources>

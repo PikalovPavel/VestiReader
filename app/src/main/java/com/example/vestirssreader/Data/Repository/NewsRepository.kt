@@ -39,8 +39,7 @@ class NewsRepository (private val remote: NewsApi,
             .map {it.channel?.items?.filter {
                     item -> item.category == category }?.map {
                     item -> item.mapToNewsItem()}}
-            .doOnSuccess{Log.d("kek", "times" +
-                    "")
+            .doOnSuccess{
                 saveToDatabase(it?: listOf())}
             .toFlowable()
             .onErrorResumeNext( getLocalNewsWithCategory(category))

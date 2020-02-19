@@ -5,7 +5,7 @@ package com.example.vestirssreader.Data
 
 
 
-enum class NetworkState{
+enum class AnswerState{
     LOADING,
     SUCCESS,
     FAILURE

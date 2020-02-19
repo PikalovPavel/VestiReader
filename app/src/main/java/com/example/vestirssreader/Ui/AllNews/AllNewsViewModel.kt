@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.vestirssreader.Data.Database.Enity.NewsItem
 
-import com.example.vestirssreader.Data.NetworkState
+import com.example.vestirssreader.Data.AnswerState
 import com.example.vestirssreader.Data.Repository.NewsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -17,9 +17,9 @@ class AllNewsViewModel(
 ):ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
-    private val _networkState = MutableLiveData<Pair<NetworkState,String>>()
+    private val _networkState = MutableLiveData<Pair<AnswerState,String>>()
 
-    val networkState:LiveData<Pair<NetworkState,String>>
+    val answerState:LiveData<Pair<AnswerState,String>>
         get() = _networkState
 
     private val _rssResponse = MutableLiveData<List<NewsItem>>()
@@ -30,25 +30,24 @@ class AllNewsViewModel(
 
 
     fun getNews() {
-        _networkState.postValue(Pair(NetworkState.LOADING,""))
+        _networkState.postValue(Pair(AnswerState.LOADING,""))
         val disposable1 = newsRepository.getNews()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe({
             _rssResponse.postValue(it)
-            _networkState.postValue(Pair(NetworkState.SUCCESS,""))
-            Log.d("kek1",  it.size.toString())
+            _networkState.postValue(Pair(AnswerState.SUCCESS,
+                it.isEmpty().toString()))
 
         }, {
-            _networkState.postValue(Pair(NetworkState.FAILURE,
+            _networkState.postValue(Pair(AnswerState.FAILURE,
                 it.message?:it.toString()))
-            Log.d("kek1",  it.message!!)
         })
         compositeDisposable.add(disposable1)
     }
 
     fun getNewsWithCategory(category:String) {
-        _networkState.postValue(Pair(NetworkState.LOADING,""))
+        _networkState.postValue(Pair(AnswerState.LOADING,""))
 
         val disposable1 = newsRepository.getNewsWithCategory(category)
             .subscribeOn(Schedulers.io())
@@ -56,11 +55,11 @@ class AllNewsViewModel(
             .subscribe({
                 Log.d("kek2",  it.size.toString())
                 _rssResponse.postValue(it)
-                _networkState.postValue(Pair(NetworkState.SUCCESS,""))
+                _networkState.postValue(Pair(AnswerState.SUCCESS,
+                    it.isEmpty().toString()))
             }, {
-                _networkState.postValue(Pair(NetworkState.FAILURE,
+                _networkState.postValue(Pair(AnswerState.FAILURE,
                     it.message?:it.toString()))
-                Log.d("kek2",  it.message!!)
             })
 
         compositeDisposable.add(disposable1)

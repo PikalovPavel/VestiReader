@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.vestirssreader.Data.Database.Enity.NewsItem
 
-import com.example.vestirssreader.Data.NetworkState
+import com.example.vestirssreader.Data.AnswerState
 import com.example.vestirssreader.Data.Repository.NewsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -16,9 +16,9 @@ class DetailNewsViewModel(
 ):ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
-    private val _networkState = MutableLiveData<Pair<NetworkState, String>>()
+    private val _networkState = MutableLiveData<Pair<AnswerState, String>>()
 
-    val networkState: LiveData<Pair<NetworkState, String>>
+    val answerState: LiveData<Pair<AnswerState, String>>
         get() = _networkState
 
     private val _rssResponse = MutableLiveData<List<NewsItem>>()
@@ -31,17 +31,17 @@ class DetailNewsViewModel(
     }
 
     fun getNews() {
-        _networkState.postValue(Pair(NetworkState.LOADING, ""))
+        _networkState.postValue(Pair(AnswerState.LOADING, ""))
         val disposable1 = newsRepository.getNews()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _rssResponse.postValue(it)
-                _networkState.postValue(Pair(NetworkState.SUCCESS, ""))
+                _networkState.postValue(Pair(AnswerState.SUCCESS, ""))
             }, {
                 _networkState.postValue(
                     Pair(
-                        NetworkState.FAILURE,
+                        AnswerState.FAILURE,
                         it.message ?: "Произошла ошибка, попробуйте снова"
                     )
                 )
@@ -50,18 +50,18 @@ class DetailNewsViewModel(
     }
 
     fun getNewsWithCategory(category: String) {
-        _networkState.postValue(Pair(NetworkState.LOADING, ""))
+        _networkState.postValue(Pair(AnswerState.LOADING, ""))
 
         val disposable1 = newsRepository.getNewsWithCategory(category)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _rssResponse.postValue(it)
-                _networkState.postValue(Pair(NetworkState.SUCCESS, ""))
+                _networkState.postValue(Pair(AnswerState.SUCCESS, ""))
             }, {
                 _networkState.postValue(
                     Pair(
-                        NetworkState.FAILURE,
+                        AnswerState.FAILURE,
                         it.message ?: "Произошла ошибка, попробуйте снова"
                     )
                 )

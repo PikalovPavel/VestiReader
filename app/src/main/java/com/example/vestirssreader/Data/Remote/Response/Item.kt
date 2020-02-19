@@ -67,21 +67,6 @@ data class Item @JvmOverloads constructor (
     return item
     }
 
-//    fun mapToNewsItem():NewsItem {
-//        val dates = parseDate(pubDate!!)
-//        val item = NewsItem(
-//            category = category?:"",
-//            link = url?:"",
-//            fullText = fullText?:"",
-//            title = title?:"",
-//            day = dates[0].toInt(),
-//            month = getMonth(dates[2]),
-//            year = dates[3].toInt(),
-//            time = dates[4].substring(0,5)
-//
-//        )
-//        return item
-//    }
 }
 
 

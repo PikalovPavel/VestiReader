@@ -1,9 +1,9 @@
-package com.example.vestirssreader.Data.Local
+package com.example.vestirssreader.Data.Remote.Response
 
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Element
+import org.simpleframework.xml.ElementList
+import org.simpleframework.xml.Root
 
 
 @Root(name = "channel", strict = false)

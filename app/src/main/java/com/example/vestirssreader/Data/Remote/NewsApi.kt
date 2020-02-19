@@ -1,6 +1,6 @@
 package com.example.vestirssreader.Data.Remote
 
-import com.example.vestirssreader.Data.Local.Rss
+import com.example.vestirssreader.Data.Remote.Response.Rss
 import io.reactivex.Single
 import retrofit2.http.GET
 

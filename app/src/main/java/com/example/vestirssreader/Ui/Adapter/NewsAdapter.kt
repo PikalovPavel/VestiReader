@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import androidx.recyclerview.widget.RecyclerView
-import com.example.vestirssreader.Data.Local.Item
-import com.example.vestirssreader.Data.Local.NewsItem
+import com.example.vestirssreader.Data.Database.Enity.NewsItem
 import com.example.vestirssreader.R
 
 import java.util.*
@@ -52,9 +51,9 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
         private val newsTitle:TextView = itemView.findViewById(R.id.title_item)
         private val newsDate:TextView = itemView.findViewById(R.id.date_item)
 
-        fun bind(news:NewsItem) {
+        fun bind(news: NewsItem) {
             newsTitle.text = news.title
-            newsDate.text = news.pubDate
+            newsDate.text = news.printDate()
         }
     }
 }

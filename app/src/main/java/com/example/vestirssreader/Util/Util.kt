@@ -1,26 +1,28 @@
 package com.example.vestirssreader.Util
 
-import android.util.Log
-import java.text.DateFormatSymbols
+import android.os.Parcel
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-fun parseDate(pubDate: String): String {
+
+
+
+
+
+fun parseDate(pubDate: String): Date{
     //val formatter = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss +zzzz")
    // val date = formatter.parse(pubDate)?: Date()
-   // val cal = Calendar.getInstance(TimeZone.getTimeZone("Europe/Moscow"))
-   // cal.time = date
-    val dates = pubDate.split(" ")
 
-//    val day = cal.get(Calendar.DAY_OF_MONTH)
-//    val month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("ru"));
-//    val year = cal.get(Calendar.YEAR)
-//    val hour = parseTime(cal.get(Calendar.HOUR))
-//    val minute = parseTime(cal.get(Calendar.MINUTE))
-    val month = getMonth(dates[2])
-    return "${dates[1]} $month ${dates[3]} ${dates[4].substring(0,5)}"
+    val dates = pubDate.split(" ")
+//    val monthInt = getMonthInt(dates[2])
+//    val month = getMonth(dates[2])
+    val dateToPrint =  "${dates[1]} ${dates[2]} ${dates[3]} ${dates[4].substring(0,5)}"
+    val fullDate = SimpleDateFormat("dd MMM yyyy HH:mm", Locale("en")).parse(dateToPrint)
+    return fullDate
 }
+
+
 
 
 //replace 2 empty lines to 1 empty line
@@ -33,8 +35,23 @@ fun removeLines(text:String):String {
 fun getMonth(month: String): String {
     val date = SimpleDateFormat("MMM", Locale.ENGLISH).parse(month)
     val cal = Calendar.getInstance()
-    cal.time = date
+    cal.time = date!!
+    return cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("ru"))!!
+}
 
-    return cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("ru"));
+fun getMonthInt(month: String): Int {
+    val date = SimpleDateFormat("MMM", Locale.ENGLISH).parse(month)
+    val cal = Calendar.getInstance()
+    cal.time = date!!
+    return cal.get(Calendar.MONTH)
+}
 
+
+fun Parcel.writeDate(date: Date?) {
+    writeLong(date?.time ?: -1)
+}
+
+fun Parcel.readDate(): Date? {
+    val long = readLong()
+    return if (long != -1L) Date(long) else null
 }

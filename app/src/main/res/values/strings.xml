@@ -27,6 +27,10 @@
         <item>Происшествия</item>
         <item>Вести.Hi-Tech</item>
         <item>В мире</item>
+        <item>Авто</item>
+        <item>Спорт</item>
+        <item>Культура</item>
+        <item>Оборона и безопасность</item>
     </string-array>
 
 </resources>

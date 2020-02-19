@@ -4,13 +4,11 @@ import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import com.example.vestirssreader.Data.Local.NewsItem
 import com.example.vestirssreader.R
 import kotlinx.android.synthetic.main.activity_detail_news.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
-import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
@@ -18,6 +16,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.example.vestirssreader.Data.Database.Enity.NewsItem
 import com.example.vestirssreader.Util.removeLines
 
 
@@ -46,10 +45,10 @@ class DetailNewActivity : AppCompatActivity(), KodeinAware {
     }
 
 
-    private fun attachOnUi(news:NewsItem) {
+    private fun attachOnUi(news: NewsItem) {
         news_title.text = news.title
-        time_news.text = news.pubDate
-        full_text_news.text = removeLines(news.fullText!!)
+        time_news.text = news.printDate()
+        full_text_news.text = removeLines(news.fullText)
         Glide.with(this)
             .load(news.link)
             .listener(object : RequestListener<Drawable> {

@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.vestirssreader.Data.Database.Enity.NewsItem
 
-import com.example.vestirssreader.Data.Local.NewsItem
 import com.example.vestirssreader.Data.NetworkState
 import com.example.vestirssreader.Data.Repository.NewsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -27,9 +27,7 @@ class AllNewsViewModel(
     val news:LiveData<List<NewsItem>>
         get() = _rssResponse
 
-    init {
-        getNews()
-    }
+
 
     fun getNews() {
         _networkState.postValue(Pair(NetworkState.LOADING,""))
@@ -44,7 +42,7 @@ class AllNewsViewModel(
         }, {
             _networkState.postValue(Pair(NetworkState.FAILURE,
                 it.message?:it.toString()))
-            Log.d("kek1",  it.message)
+            Log.d("kek1",  it.message!!)
         })
         compositeDisposable.add(disposable1)
     }
@@ -62,7 +60,7 @@ class AllNewsViewModel(
             }, {
                 _networkState.postValue(Pair(NetworkState.FAILURE,
                     it.message?:it.toString()))
-                Log.d("kek2",  it.message)
+                Log.d("kek2",  it.message!!)
             })
 
         compositeDisposable.add(disposable1)

@@ -9,7 +9,7 @@ import android.widget.AdapterView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.vestirssreader.Data.Local.NewsItem
+import com.example.vestirssreader.Data.Database.Enity.NewsItem
 import com.example.vestirssreader.R
 import com.example.vestirssreader.Ui.Adapter.BaseAdapterCallback
 import com.example.vestirssreader.Ui.Adapter.NewsAdapter
@@ -34,6 +34,9 @@ class MainActivity : AppCompatActivity(),KodeinAware {
         val newsAdaper = NewsAdapter()
         viewModel.news.observe(this, Observer { items ->
             newsAdaper.setData(items)
+            items.forEach {
+                Log.d("kek", it.category)
+            }
         })
 
         viewModel.networkState.observe(this, Observer {
@@ -41,7 +44,6 @@ class MainActivity : AppCompatActivity(),KodeinAware {
         })
         categoriesSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
-
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

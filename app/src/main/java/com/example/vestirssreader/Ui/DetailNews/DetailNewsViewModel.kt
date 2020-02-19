@@ -3,8 +3,8 @@ package com.example.vestirssreader.Ui.DetailNews
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.vestirssreader.Data.Database.Enity.NewsItem
 
-import com.example.vestirssreader.Data.Local.NewsItem
 import com.example.vestirssreader.Data.NetworkState
 import com.example.vestirssreader.Data.Repository.NewsRepository
 import io.reactivex.android.schedulers.AndroidSchedulers

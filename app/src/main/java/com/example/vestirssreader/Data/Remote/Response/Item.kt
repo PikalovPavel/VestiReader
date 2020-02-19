@@ -1,13 +1,15 @@
-package com.example.vestirssreader.Data.Local
+package com.example.vestirssreader.Data.Remote.Response
 
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.example.vestirssreader.Data.Database.Enity.NewsItem
+import com.example.vestirssreader.Util.getMonth
 import com.example.vestirssreader.Util.parseDate
 import org.simpleframework.xml.Attribute
-import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Element
 import org.simpleframework.xml.Path
-import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Root
 
 
 
@@ -52,52 +54,35 @@ data class Item @JvmOverloads constructor (
     @param:Element(name = "title")
     var title: String?=""
 ) {
-    fun mapToNewsItem() =
-        NewsItem(category = category,
-            link = url,
-            fullText = fullText,
-            pubDate = parseDate(pubDate!!),
-            title = title)
+    fun mapToNewsItem():NewsItem {
+        val dates = parseDate(pubDate!!)
+       val item = NewsItem(
+            category = category?:"",
+            link = url?:"",
+            fullText = fullText?:"",
+            title = title?:"",
+            date = dates
 
+        )
+    return item
+    }
 
+//    fun mapToNewsItem():NewsItem {
+//        val dates = parseDate(pubDate!!)
+//        val item = NewsItem(
+//            category = category?:"",
+//            link = url?:"",
+//            fullText = fullText?:"",
+//            title = title?:"",
+//            day = dates[0].toInt(),
+//            month = getMonth(dates[2]),
+//            year = dates[3].toInt(),
+//            time = dates[4].substring(0,5)
+//
+//        )
+//        return item
+//    }
 }
 
 
-class NewsItem(
-    val category: String?,
-    val link: String?,
-    val fullText: String?,
-    var pubDate: String?,
-    var title: String?
-):Parcelable {
 
-    constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString()
-    )
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(category)
-        parcel.writeString(link)
-        parcel.writeString(fullText)
-        parcel.writeString(pubDate)
-        parcel.writeString(title)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<NewsItem> {
-        override fun createFromParcel(parcel: Parcel): NewsItem {
-            return NewsItem(parcel)
-        }
-
-        override fun newArray(size: Int): Array<NewsItem?> {
-            return arrayOfNulls(size)
-        }
-    }
-}

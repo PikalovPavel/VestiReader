@@ -1,6 +1,10 @@
 package com.example.vestirssreader.Util
 
 import android.os.Parcel
+import android.util.Log
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,11 +22,25 @@ fun parseDate(pubDate: String): Date{
 //    val monthInt = getMonthInt(dates[2])
 //    val month = getMonth(dates[2])
     val dateToPrint =  "${dates[1]} ${dates[2]} ${dates[3]} ${dates[4].substring(0,5)}"
-    val fullDate = SimpleDateFormat("dd MMM yyyy HH:mm", Locale("en")).parse(dateToPrint)
+    val fullDate = SimpleDateFormat("dd MMM yyyy HH:mm", Locale("en")).parse(dateToPrint)?:Date()
     return fullDate
 }
 
+fun isNetworkAvailable(): Boolean {
+    //this page always get 204 code
+    return try {
+        val urlc = URL("http://clients3.google.com/generate_204")
+            .openConnection() as HttpURLConnection
+        urlc.setRequestProperty("User-Agent", "Android")
+        urlc.setRequestProperty("Connection", "close")
+        urlc.connectTimeout = 1500
+        urlc.connect()
+        urlc.responseCode == 204 && urlc.contentLength == 0
+    } catch (e: IOException) {
+        false
+    }
 
+}
 
 
 //replace 2 empty lines to 1 empty line
@@ -32,19 +50,6 @@ fun removeLines(text:String):String {
     return text.replace(pattern, "\n\n")
 }
 
-fun getMonth(month: String): String {
-    val date = SimpleDateFormat("MMM", Locale.ENGLISH).parse(month)
-    val cal = Calendar.getInstance()
-    cal.time = date!!
-    return cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("ru"))!!
-}
-
-fun getMonthInt(month: String): Int {
-    val date = SimpleDateFormat("MMM", Locale.ENGLISH).parse(month)
-    val cal = Calendar.getInstance()
-    cal.time = date!!
-    return cal.get(Calendar.MONTH)
-}
 
 
 fun Parcel.writeDate(date: Date?) {
@@ -55,3 +60,4 @@ fun Parcel.readDate(): Date? {
     val long = readLong()
     return if (long != -1L) Date(long) else null
 }
+

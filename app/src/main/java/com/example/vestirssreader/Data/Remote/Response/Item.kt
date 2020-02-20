@@ -1,10 +1,8 @@
 package com.example.vestirssreader.Data.Remote.Response
 
 
-import android.os.Parcel
-import android.os.Parcelable
+import android.util.Log
 import com.example.vestirssreader.Data.Database.Enity.NewsItem
-import com.example.vestirssreader.Util.getMonth
 import com.example.vestirssreader.Util.parseDate
 import org.simpleframework.xml.Attribute
 import org.simpleframework.xml.Element
@@ -56,15 +54,13 @@ data class Item @JvmOverloads constructor (
 ) {
     fun mapToNewsItem():NewsItem {
         val dates = parseDate(pubDate!!)
-       val item = NewsItem(
-            category = category?:"",
-            link = url?:"",
-            fullText = fullText?:"",
-            title = title?:"",
-            date = dates
-
-        )
-    return item
+        return NewsItem(
+             category = category ?:"",
+             link = url ?:"",
+             fullText = fullText ?:"",
+             title = title ?:"",
+             date = dates
+         )
     }
 
 }

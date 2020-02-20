@@ -63,7 +63,7 @@ data class NewsItem(
         val day = cal.get(Calendar.DAY_OF_MONTH)
         val month = cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("ru"))
         val year = cal.get(Calendar.YEAR)
-        val hours = getTime(cal.get(Calendar.HOUR))
+        val hours = getTime(cal.get(Calendar.HOUR_OF_DAY))
         val minutes = getTime(cal.get(Calendar.MINUTE))
         return "$day $month $year $hours:$minutes"
     }

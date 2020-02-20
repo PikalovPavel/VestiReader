@@ -1,5 +1,6 @@
 package com.example.vestirssreader.Ui.Adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

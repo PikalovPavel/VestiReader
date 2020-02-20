@@ -19,6 +19,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import android.view.KeyEvent.KEYCODE_DPAD_CENTER
+import android.view.MotionEvent
+
 
 class MainActivity : AppCompatActivity(),KodeinAware {
     private val TAG = "fetchDataError"
@@ -39,11 +42,6 @@ class MainActivity : AppCompatActivity(),KodeinAware {
         }
 
         viewModel.news.observe(this, Observer { items ->
-            items.forEach {
-                Log.d("kek", it.category)
-
-            }
-
             newsAdaper.setData(items)
         })
 
@@ -96,17 +94,45 @@ class MainActivity : AppCompatActivity(),KodeinAware {
 
 
     private fun initSpinner() {
+
         categoriesSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedItem = parent?.getItemAtPosition(position).toString()
-                getNews(selectedItem)
+                if (!viewModel.rotation.value!!) {
+                    val selectedItem = parent?.getItemAtPosition(position).toString()
+                    getNews(selectedItem)
+                    viewModel.rotation.value = false
+                }
+
             }
 
         }
+
+        val spinnerOnTouch = View.OnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                viewModel.rotation.value = false
+            }
+            false
+        }
+        val spinnerOnKey = View.OnKeyListener { _, keyCode, _ ->
+            viewModel.rotation.value = false
+            keyCode == KEYCODE_DPAD_CENTER
+        }
+
+        categoriesSpinner.setOnTouchListener(spinnerOnTouch)
+        categoriesSpinner.setOnKeyListener(spinnerOnKey)
+
+
     }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        viewModel.rotation.value = true
+    }
+
 
     private fun getNews(category: String) {
         if (category=="Все") viewModel.getNews() else

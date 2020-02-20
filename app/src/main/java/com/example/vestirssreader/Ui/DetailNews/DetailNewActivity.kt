@@ -20,6 +20,9 @@ import com.example.vestirssreader.Data.Database.Enity.NewsItem
 import com.example.vestirssreader.Util.removeLines
 
 
+
+
+
 class DetailNewActivity : AppCompatActivity(), KodeinAware {
     private val TAG = "GLIDE"
     private val factory : DetailNewsViewModelFactory by instance()
@@ -32,15 +35,23 @@ class DetailNewActivity : AppCompatActivity(), KodeinAware {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_news)
         viewModel = ViewModelProvider(this, factory).get(DetailNewsViewModel::class.java)
+        hideError()
         back_button.setOnClickListener {
             onBackPressed()
         }
         val news = intent.getParcelableExtra<NewsItem>("news")
-
         if (news==null) {
-            onBackPressed()
+            if (viewModel.liveData.value == null)  {
+                showError()
+            }
+            else  {
+                attachOnUi(viewModel.liveData.value!!)
+            }
         }
-            else attachOnUi(news)
+        else {
+            attachOnUi(news)
+            updateLiveData(news)
+        }
 
     }
 
@@ -58,7 +69,6 @@ class DetailNewActivity : AppCompatActivity(), KodeinAware {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    progressBar_cover.visibility = View.VISIBLE
                     Log.d(TAG, e!!.message?:e.toString())
                     return false
                 }
@@ -70,13 +80,34 @@ class DetailNewActivity : AppCompatActivity(), KodeinAware {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    progressBar_cover.visibility = View.INVISIBLE
                     return false
                 }
             })
             .into(news_cover)
+    }
+
+
+    private fun showError() {
+
+        error_detail_sign.visibility = View.VISIBLE
+        error_info.visibility = View.VISIBLE
 
     }
+
+    fun updateLiveData(news: NewsItem) {
+
+        if (viewModel.liveData.value!=null) {
+            viewModel.liveData.setValue(news)
+        }
+
+    }
+
+    fun hideError() {
+        error_detail_sign.visibility = View.GONE
+        error_info.visibility = View.GONE
+
+    }
+
 
 
 }

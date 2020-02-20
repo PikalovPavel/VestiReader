@@ -28,6 +28,12 @@ class AllNewsViewModel(
         get() = _rssResponse
 
 
+    val rotation = MutableLiveData<Boolean>()
+        get() = field
+
+    init {
+        rotation.postValue(false)
+    }
 
     fun getNews() {
         _networkState.postValue(Pair(AnswerState.LOADING,""))
@@ -40,6 +46,7 @@ class AllNewsViewModel(
                 it.isEmpty().toString()))
 
         }, {
+            _rssResponse.postValue(emptyList())
             _networkState.postValue(Pair(AnswerState.FAILURE,
                 it.message?:it.toString()))
         })
@@ -47,20 +54,20 @@ class AllNewsViewModel(
     }
 
     fun getNewsWithCategory(category:String) {
+        Log.d("kek", category)
         _networkState.postValue(Pair(AnswerState.LOADING,""))
-
         val disposable1 = newsRepository.getNewsWithCategory(category)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.d("kek2",  it.size.toString())
                 _rssResponse.postValue(it)
                 _networkState.postValue(Pair(AnswerState.SUCCESS,
                     it.isEmpty().toString()))
             }, {
+                _rssResponse.postValue(emptyList())
                 _networkState.postValue(Pair(AnswerState.FAILURE,
                     it.message?:it.toString()))
-            })
+            }, {})
 
         compositeDisposable.add(disposable1)
     }

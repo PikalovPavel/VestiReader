@@ -10,14 +10,13 @@ import io.reactivex.Single
 interface NewsItemDao {
 
     @Query("SELECT * FROM newsitem ORDER by date DESC LIMIT 70")
-    fun getNews(): Flowable<List<NewsItem>>
+    fun getNews(): Single<List<NewsItem>>
 
     @Query("SELECT * FROM newsitem WHERE category=:category ORDER by date DESC LIMIT 70")
-    fun getCategoryNews(category:String): Flowable<List<NewsItem>>
+    fun getCategoryNews(category:String): Single<List<NewsItem>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveAllNews(news: List<NewsItem>)
-
 
 
 }

@@ -17,23 +17,14 @@ abstract class DatabaseService : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: DatabaseService? = null
-        private val LOCK = Any()
-
-        operator fun invoke(context: Context) = INSTANCE ?: synchronized(LOCK) {
-            INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
-        }
-
         fun getInstance(context: Context): DatabaseService =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
+            INSTANCE ?: synchronized(DatabaseService::class.java){
+                INSTANCE ?: Room.databaseBuilder(
+                    context.applicationContext,
+                    DatabaseService::class.java,
+                    "News.db"
+                ).build()
+                    .also { INSTANCE = it }
             }
-
-        private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(
-                context.applicationContext, DatabaseService::class.java,
-                "News.db"
-            )
-                .build()
-
     }
 }

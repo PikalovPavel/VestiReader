@@ -1,43 +1,35 @@
 package com.example.vestirssreader.Data.Remote
 
-import okhttp3.Interceptor
+import com.example.vestirssreader.Data.Remote.Response.Rss
+import io.reactivex.Single
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
-import java.util.concurrent.TimeUnit
+import retrofit2.http.GET
 
-const val BASE_URL: String = "https://www.vesti.ru/"
+interface  NewsApiService{
 
-object NewsApiService {
-    fun getService():Retrofit {
-        val requsetInterceptor = Interceptor {chain ->
-            val url = chain.request()
-                .url()
-                .newBuilder()
+    @GET("vesti.rss")
+    fun getFeed(): Single<Rss>
+
+    companion object
+    {
+        const val BASE_URL: String = "https://www.vesti.ru/"
+        fun create(): NewsApiService = createApi(HttpUrl.parse(BASE_URL)!!)
+
+        private fun createApi(httpUrl: HttpUrl): NewsApiService {
+
+            val okHttpClient = OkHttpClient.Builder().build()
+
+            return Retrofit.Builder()
+                .baseUrl(httpUrl)
+                .client(okHttpClient)
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
-            val request = chain.request()
-                .newBuilder()
-                .url(url)
-                .build()
-
-            return@Interceptor chain.proceed(request)
+                .create(NewsApiService::class.java)
         }
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(requsetInterceptor)
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .build()
-
-
-
-        @Suppress("DEPRECATION")
-        return Retrofit.Builder()
-            .client(okHttpClient)
-            .baseUrl(BASE_URL)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(SimpleXmlConverterFactory.create())
-            .build()
-
-
     }
 }

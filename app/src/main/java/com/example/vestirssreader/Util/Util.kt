@@ -26,22 +26,6 @@ fun parseDate(pubDate: String): Date{
     return fullDate
 }
 
-fun isNetworkAvailable(): Boolean {
-    //this page always get 204 code
-    return try {
-        val urlc = URL("http://clients3.google.com/generate_204")
-            .openConnection() as HttpURLConnection
-        urlc.setRequestProperty("User-Agent", "Android")
-        urlc.setRequestProperty("Connection", "close")
-        urlc.connectTimeout = 1500
-        urlc.connect()
-        urlc.responseCode == 204 && urlc.contentLength == 0
-    } catch (e: IOException) {
-        false
-    }
-
-}
-
 
 //replace 2 empty lines to 1 empty line
 

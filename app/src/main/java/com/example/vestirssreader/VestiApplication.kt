@@ -1,8 +1,8 @@
 package com.example.vestirssreader
 
 import android.app.Application
+import com.example.vestirssreader.Data.Database.Dao.NewsItemDao
 import com.example.vestirssreader.Data.Database.DatabaseService
-import com.example.vestirssreader.Data.Remote.NewsApi
 import com.example.vestirssreader.Data.Remote.NewsApiService
 import com.example.vestirssreader.Data.Repository.NewsRepository
 import com.example.vestirssreader.Ui.AllNews.AllNewsModelFactory
@@ -20,10 +20,20 @@ class VestiApplication:Application(), KodeinAware {
     override val kodein = Kodein.lazy {
         import(androidXModule(this@VestiApplication))
 
-        bind<NewsApi>() with  singleton { NewsApiService.getService().create(NewsApi::class.java)}
-        bind() from singleton { DatabaseService(instance()) }
-        bind() from singleton { instance<DatabaseService>().getNewsDao() }
-        bind() from singleton { NewsRepository(instance(), instance()) }
+        bind<NewsApiService>() with singleton {
+            NewsApiService.create()
+        }
+
+        bind<DatabaseService>() with singleton {
+            DatabaseService.getInstance(applicationContext)
+        }
+        bind<NewsItemDao>() with singleton {
+            instance<DatabaseService>().getNewsDao()
+        }
+        bind<NewsRepository>() with singleton {
+            NewsRepository(instance(), instance())
+
+        }
         bind() from provider { DetailNewsViewModelFactory(instance()) }
         bind() from provider { AllNewsModelFactory(instance())}
     }

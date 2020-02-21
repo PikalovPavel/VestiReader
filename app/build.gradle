@@ -59,10 +59,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation 'com.squareup.retrofit2:converter-simplexml:2.7.1'
 
-
+    def glideVersion = '4.11.0'
 
     // Glide
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
 
 
     //Rx
@@ -70,7 +70,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
 
-    def room_version = "2.2.3"
+    def room_version = "2.2.4"
 
     implementation "androidx.room:room-runtime:$room_version"
 
@@ -80,8 +80,10 @@ dependencies {
 
 
     //Kodein Dependency Injection
-    implementation "org.kodein.di:kodein-di-generic-jvm:6.2.1"
-    implementation "org.kodein.di:kodein-di-framework-android-x:6.2.1"
+
+    def kodein_version = "6.2.1"
+    implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
+    implementation "org.kodein.di:kodein-di-framework-android-x:$kodein_version"
 
 
     //swipe to refresh

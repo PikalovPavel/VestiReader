@@ -45,7 +45,7 @@ class NewsRepository (private val remote: NewsApiService,
             .doOnSuccess { saveToDatabase(it) }
             .doOnError { Log.d(REMOTE, it.message ?: it.toString()) }
             .onErrorResumeNext(getLocalNews())
-            
+
 
 
     }

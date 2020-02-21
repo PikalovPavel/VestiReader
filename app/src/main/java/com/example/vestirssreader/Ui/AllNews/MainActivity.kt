@@ -43,10 +43,6 @@ class MainActivity : AppCompatActivity(),KodeinAware {
 
         viewModel.news.observe(this, Observer { items ->
             newsAdaper.setData(items)
-            items.forEach {
-                Log.d("kek",  " it is in main ${it.category}")
-            }
-
         })
 
         viewModel.answerState.observe(this, Observer {
